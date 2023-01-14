@@ -6,4 +6,5 @@ import { World } from './scripts/world';
 const appDiv = document.getElementById('app');
 appDiv.innerHTML = `<h1>JS Starter</h1>`;
 
-const world = new World.build();
+const world = new World();
+world.build();
