@@ -1,4 +1,6 @@
 import { Graphics, Application } from 'pixi.js';
+import { EBlocks } from '../../enums/blocks';
+import { cells } from '../../data';
 
 export class Block extends Graphics {
   width = 50;
@@ -8,6 +10,12 @@ export class Block extends Graphics {
   element: Graphics;
   rowIndex: number;
   cellIndex: number;
+  neighbours: Array<{ hasPower: boolean }>;
+  adjacent: Array<{
+    power: { enabled: boolean; distance: number };
+    type: EBlocks;
+  }>;
+  type: EBlocks;
 
   constructor(app: Application, color: number) {
     super();
@@ -18,24 +26,47 @@ export class Block extends Graphics {
   draw(rowIndex: number, cellIndex: number) {
     this.rowIndex = rowIndex;
     this.cellIndex = cellIndex;
+    this.add();
     this.app.ticker.add(() => this.update());
     this.app.stage.addChild(this);
     this.enable();
   }
 
-  getNeighbourOne() {
-    const row = this.rowIndex - 1;
-    const cell = this.cellIndex - 1;
-    if (row < 0 || cell < 0) return;
-    const block = this.app.world[row][cell];
+  getNeighbour(rowIndex, cellIndex) {
+    const row = this.rowIndex - rowIndex;
+    const cell = this.cellIndex - cellIndex;
+    if (row < 0 || cell < 0) return EBlocks.EMPTY;
+
+    const rowLength = cells.length;
+    const cellLength = cells[this.rowIndex].length;
+    if (row > rowLength - 1 || cell > cellLength - 1) return EBlocks.EMPTY;
+
+    return cells[row][cell];
   }
 
   getNeighbours() {
-    this.getNeighbourOne();
+    this.neighbours = [
+      this.getNeighbour(1, 1),
+      this.getNeighbour(1, 0),
+      this.getNeighbour(1, -1),
+      this.getNeighbour(0, 1),
+      this.getNeighbour(0, -1),
+      this.getNeighbour(-1, 1),
+      this.getNeighbour(-1, 0),
+      this.getNeighbour(-1, -1),
+    ];
+
+    this.adjacent = [
+      this.neighbours[1],
+      this.neighbours[3],
+      this.neighbours[4],
+      this.neighbours[6],
+    ];
   }
 
   update() {
     this.getNeighbours();
+    this.updater();
     this.ticker();
     this.clear();
     this.beginFill(this.color);
@@ -48,6 +79,27 @@ export class Block extends Graphics {
     );
 
     this.endFill();
+  }
+
+  getPower() {
+    const distances = this.adjacent.map((item) => item?.power?.distance || 0);
+
+    return {
+      enabled: !!this.adjacent.find((item) => item.type === EBlocks.POWER),
+      distance: Math.max(...distances),
+    };
+  }
+
+  updater() {
+    cells[this.rowIndex][this.cellIndex].power = this.getPower();
+  }
+
+  add() {
+    if (!cells[this.rowIndex]) cells[this.rowIndex] = [];
+    cells[this.rowIndex][this.cellIndex] = {
+      type: this.type,
+      power: { enabled: false, distance: 999 },
+    };
   }
 
   enable() {

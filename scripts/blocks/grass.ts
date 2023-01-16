@@ -3,6 +3,8 @@ import { Block } from './block';
 import { EBlocks } from '../../enums/blocks';
 
 export class Grass extends Block {
+  type = EBlocks.GRASS;
+
   constructor(app: Application) {
     super(app, 0x1d6b48);
   }

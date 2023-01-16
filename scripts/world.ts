@@ -6,13 +6,12 @@ export class World {
   build() {
     const app = new Application();
     const ticker = Ticker.shared;
-    app.world = world;
     app.ticker = ticker;
 
     document.body.innerHTML = '';
     document.body.appendChild(app.view);
 
-    app.world.forEach((row, rowIndex) => {
+    world.forEach((row, rowIndex) => {
       row.forEach((_, cellIndex) => {
         const cell = new Cell(app);
         cell.draw(rowIndex, cellIndex);
