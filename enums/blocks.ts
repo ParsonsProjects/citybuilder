@@ -4,4 +4,6 @@ export enum EBlocks {
   RESIDENTIAL = 2,
   EMPTY = -1,
   POWER = 3,
+  ROAD = 4,
+  POLICE = 5,
 }

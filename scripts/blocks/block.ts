@@ -10,12 +10,18 @@ export class Block extends Graphics {
   element: Graphics;
   rowIndex: number;
   cellIndex: number;
-  neighbours: Array<{ hasPower: boolean }>;
+  neighbours: Array<{
+    power: { enabled: boolean };
+    police: { coverage: number };
+    type: EBlocks;
+  }>;
   adjacent: Array<{
-    power: { enabled: boolean; distance: number };
+    power: { enabled: boolean };
+    police: { coverage: number };
     type: EBlocks;
   }>;
   type: EBlocks;
+  coverage = 0;
 
   constructor(app: Application, color: number) {
     super();
@@ -82,23 +88,36 @@ export class Block extends Graphics {
   }
 
   getPower() {
-    const distances = this.adjacent.map((item) => item?.power?.distance || 0);
+    return {
+      enabled:
+        !!this.adjacent.find(
+          (item) =>
+            item.type === EBlocks.POWER ||
+            ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item.type) &&
+              item.power.enabled)
+        ) && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type),
+    };
+  }
+
+  getPolice() {
+    const levels = this.neighbours.map((item) => item?.police?.coverage || 0);
 
     return {
-      enabled: !!this.adjacent.find((item) => item.type === EBlocks.POWER),
-      distance: Math.max(...distances),
+      coverage: this.coverage || Math.max(Math.max(...levels) - 1, 0),
     };
   }
 
   updater() {
     cells[this.rowIndex][this.cellIndex].power = this.getPower();
+    cells[this.rowIndex][this.cellIndex].police = this.getPolice();
   }
 
   add() {
     if (!cells[this.rowIndex]) cells[this.rowIndex] = [];
     cells[this.rowIndex][this.cellIndex] = {
       type: this.type,
-      power: { enabled: false, distance: 999 },
+      power: { enabled: false },
+      police: { coverage: this.coverage },
     };
   }
 

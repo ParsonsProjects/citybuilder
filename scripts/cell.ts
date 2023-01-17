@@ -2,6 +2,8 @@ import { Application } from 'pixi.js';
 import { Grass } from './blocks/grass';
 import { Water } from './blocks/water';
 import { Power } from './blocks/power';
+import { Road } from './blocks/road';
+import { Police } from './blocks/police';
 import { Residential } from './blocks/residential';
 import { EBlocks } from '../enums/blocks';
 import world from '../data/world';
@@ -33,6 +35,14 @@ export class Cell {
       case EBlocks.POWER:
         const power = new Power(this.app);
         power.draw(this.rowIndex, this.cellIndex);
+        break;
+      case EBlocks.ROAD:
+        const road = new Road(this.app);
+        road.draw(this.rowIndex, this.cellIndex);
+        break;
+      case EBlocks.POLICE:
+        const police = new Police(this.app);
+        police.draw(this.rowIndex, this.cellIndex);
         break;
       default:
     }
