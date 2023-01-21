@@ -1,6 +1,7 @@
 import { Application } from 'pixi.js';
 import { Block } from './block';
 import { EBlocks } from '../../enums/blocks';
+import world from '../../data/map';
 
 export class Grass extends Block {
   type = EBlocks.GRASS;
@@ -11,11 +12,13 @@ export class Grass extends Block {
 
   onButtonOver() {
     this.color = 0xb0d19f;
-    // this.app.world[this.rowIndex][this.cellIndex] = EBlocks.RESIDENTIAL;
   }
 
   onButtonOut() {
     this.color = 0x1d6b48;
-    // this.app.world[this.rowIndex][this.cellIndex] = EBlocks.GRASS;
+  }
+
+  onButtonDown() {
+    world[this.rowIndex][this.cellIndex] = EBlocks.RESIDENTIAL;
   }
 }

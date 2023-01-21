@@ -1,6 +1,6 @@
 import { Graphics, Application } from 'pixi.js';
 import { EBlocks } from '../../enums/blocks';
-import { INeighbours } from '../../interfaces';
+import { INeighbours, INeighbour } from '../../interfaces';
 import { blocks } from '../../data';
 
 export class Block extends Graphics {
@@ -13,8 +13,12 @@ export class Block extends Graphics {
   cellIndex: number;
   neighbours: INeighbours;
   adjacent: INeighbours;
+  block: INeighbour;
   type: EBlocks;
   coverage = 0;
+  output = 0;
+  usage = 0;
+  powerConnected = false;
 
   constructor(app: Application, color: number) {
     super();
@@ -81,14 +85,21 @@ export class Block extends Graphics {
   }
 
   getPower() {
+    const enabled =
+      !!this.adjacent.find(
+        (item) =>
+          item.type === EBlocks.POWER ||
+          ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item.type) &&
+            item.power.enabled)
+      ) && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type);
+
+    const levels = this.adjacent.map((item) => item?.power?.output || 0);
+
+    this.powerConnected = enabled;
+
     return {
-      enabled:
-        !!this.adjacent.find(
-          (item) =>
-            item.type === EBlocks.POWER ||
-            ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item.type) &&
-              item.power.enabled)
-        ) && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type),
+      enabled,
+      output: this.output || Math.max(Math.max(...levels) - this.usage, 0),
     };
   }
 
@@ -109,7 +120,7 @@ export class Block extends Graphics {
     if (!blocks[this.rowIndex]) blocks[this.rowIndex] = [];
     blocks[this.rowIndex][this.cellIndex] = {
       type: this.type,
-      power: { enabled: false },
+      power: { enabled: this.type === EBlocks.POWER, output: this.output },
       police: { coverage: this.coverage },
     };
   }

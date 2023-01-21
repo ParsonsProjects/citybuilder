@@ -7,6 +7,7 @@ export class Police extends Block {
   coverage = 5;
   cost = 30000;
   rate = 400;
+  usage = 15;
 
   constructor(app: Application) {
     super(app, 0x004fcf);
