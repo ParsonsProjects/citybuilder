@@ -1,12 +1,12 @@
 import { Application } from 'pixi.js';
-import { Grass } from './blocks/grass';
-import { Water } from './blocks/water';
-import { Power } from './blocks/power';
-import { Road } from './blocks/road';
-import { Police } from './blocks/police';
-import { Residential } from './blocks/residential';
-import { EBlocks } from '../enums/blocks';
-import world from '../data/world';
+import { Grass } from '../blocks/grass';
+import { Water } from '../blocks/water';
+import { Power } from '../blocks/power';
+import { Road } from '../blocks/road';
+import { Police } from '../blocks/police';
+import { Residential } from '../blocks/residential';
+import { EBlocks } from '../../enums/blocks';
+import world from '../../data/map';
 
 export class Cell {
   app: Application;

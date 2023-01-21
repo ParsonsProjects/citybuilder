@@ -1,9 +1,9 @@
 import { Application, Ticker } from 'pixi.js';
-import world from '../data/world';
+import world from '../../data/map';
 import { Cell } from './cell';
 
 export class World {
-  build() {
+  init() {
     const app = new Application();
     const ticker = Ticker.shared;
     app.ticker = ticker;

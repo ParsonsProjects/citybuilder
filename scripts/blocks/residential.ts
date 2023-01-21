@@ -1,6 +1,6 @@
 import { Application } from 'pixi.js';
 import { Zone } from './zone';
-import { cells } from '../../data';
+import { blocks } from '../../data';
 import { EBlocks } from '../../enums/blocks';
 
 export class Residential extends Zone {
@@ -9,7 +9,7 @@ export class Residential extends Zone {
   constructor(app: Application) {
     super(app, 0xb0d19f);
     setTimeout(() => {
-      console.log(cells);
+      console.log(blocks);
     }, 500);
   }
 

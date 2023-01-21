@@ -10,4 +10,4 @@ export const utilities = {
   },
 };
 
-export const cells = [];
+export const blocks = [];

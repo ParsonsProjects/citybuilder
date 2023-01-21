@@ -1,25 +1,18 @@
 import { Graphics, Application } from 'pixi.js';
 import { EBlocks } from '../../enums/blocks';
-import { cells } from '../../data';
+import { INeighbours } from '../../interfaces';
+import { blocks } from '../../data';
 
 export class Block extends Graphics {
-  width = 50;
-  height = 50;
+  width = 25;
+  height = 25;
   color: number;
   app: Application;
   element: Graphics;
   rowIndex: number;
   cellIndex: number;
-  neighbours: Array<{
-    power: { enabled: boolean };
-    police: { coverage: number };
-    type: EBlocks;
-  }>;
-  adjacent: Array<{
-    power: { enabled: boolean };
-    police: { coverage: number };
-    type: EBlocks;
-  }>;
+  neighbours: INeighbours;
+  adjacent: INeighbours;
   type: EBlocks;
   coverage = 0;
 
@@ -43,11 +36,11 @@ export class Block extends Graphics {
     const cell = this.cellIndex - cellIndex;
     if (row < 0 || cell < 0) return EBlocks.EMPTY;
 
-    const rowLength = cells.length;
-    const cellLength = cells[this.rowIndex].length;
+    const rowLength = blocks.length;
+    const cellLength = blocks[this.rowIndex].length;
     if (row > rowLength - 1 || cell > cellLength - 1) return EBlocks.EMPTY;
 
-    return cells[row][cell];
+    return blocks[row][cell];
   }
 
   getNeighbours() {
@@ -108,13 +101,13 @@ export class Block extends Graphics {
   }
 
   updater() {
-    cells[this.rowIndex][this.cellIndex].power = this.getPower();
-    cells[this.rowIndex][this.cellIndex].police = this.getPolice();
+    blocks[this.rowIndex][this.cellIndex].power = this.getPower();
+    blocks[this.rowIndex][this.cellIndex].police = this.getPolice();
   }
 
   add() {
-    if (!cells[this.rowIndex]) cells[this.rowIndex] = [];
-    cells[this.rowIndex][this.cellIndex] = {
+    if (!blocks[this.rowIndex]) blocks[this.rowIndex] = [];
+    blocks[this.rowIndex][this.cellIndex] = {
       type: this.type,
       power: { enabled: false },
       police: { coverage: this.coverage },
