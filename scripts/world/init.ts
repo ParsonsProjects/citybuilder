@@ -26,5 +26,5 @@ export class World {
 }
 
 setTimeout(() => {
-  console.log(blocks);
+  // console.log(blocks);
 }, 500);

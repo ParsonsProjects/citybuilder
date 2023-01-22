@@ -85,24 +85,21 @@ export class Block extends Graphics {
   }
 
   getPower() {
-    const enabled =
-      !!this.adjacent.find(
+    const powerAdjacent =
+      !!this.adjacent.some(
         (item) =>
           item.type === EBlocks.POWER ||
           ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item.type) &&
             item.power.enabled)
-      ) && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type);
+      ) || this.type === EBlocks.POWER;
 
-    const distances = this.adjacent.map((item) => item?.power?.distance || 0);
+    const enabled =
+      powerAdjacent && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type);
 
     this.powerConnected = enabled;
 
     return {
       enabled,
-      distance:
-        this.type === EBlocks.POWER
-          ? 0
-          : Math.max(Math.min(...distances) + 1, 0),
     };
   }
 
@@ -117,6 +114,7 @@ export class Block extends Graphics {
   updater() {
     blocks[this.rowIndex][this.cellIndex].power = this.getPower();
     blocks[this.rowIndex][this.cellIndex].police = this.getPolice();
+    this.block = blocks[this.rowIndex][this.cellIndex];
   }
 
   add() {
