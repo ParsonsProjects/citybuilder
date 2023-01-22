@@ -8,7 +8,7 @@ export class Power {
   constructor(wrapper: Element) {
     this.wrapper = wrapper;
     this.creatPowerElements();
-    // window.requestAnimationFrame(() => this.ticker());
+    window.requestAnimationFrame(() => this.ticker());
   }
 
   creatPowerElements() {
@@ -46,6 +46,6 @@ export class Power {
 
   ticker() {
     this.updatePower();
-    // window.requestAnimationFrame(() => this.ticker());
+    window.requestAnimationFrame(() => this.ticker());
   }
 }
