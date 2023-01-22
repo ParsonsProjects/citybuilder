@@ -2,6 +2,7 @@ import { Application, Ticker } from 'pixi.js';
 import world from '../../data/map';
 import { Cell } from './cell';
 import { blocks } from '../../data';
+import { utilities } from '../../data';
 
 export class World {
   init() {
@@ -13,6 +14,11 @@ export class World {
 
     document.body.innerHTML = '';
     document.body.appendChild(app.view);
+
+    ticker.add(() => {
+      utilities.power.total = 0;
+      utilities.power.usage = 0;
+    });
 
     world.forEach((row, rowIndex) => {
       row.forEach((_, cellIndex) => {

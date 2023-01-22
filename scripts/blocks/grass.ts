@@ -2,6 +2,7 @@ import { Application } from 'pixi.js';
 import { Block } from './block';
 import { EBlocks } from '../../enums/blocks';
 import world from '../../data/map';
+import { blocks } from '../../data';
 
 export class Grass extends Block {
   type = EBlocks.GRASS;
@@ -20,5 +21,8 @@ export class Grass extends Block {
 
   onButtonDown() {
     world[this.rowIndex][this.cellIndex] = EBlocks.RESIDENTIAL;
+    setTimeout(() => {
+      console.log(blocks);
+    }, 600);
   }
 }

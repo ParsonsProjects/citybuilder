@@ -18,7 +18,6 @@ export class Block extends Graphics {
   coverage = 0;
   output = 0;
   usage = 0;
-  powerConnected = false;
 
   constructor(app: Application, color: number) {
     super();
@@ -35,7 +34,7 @@ export class Block extends Graphics {
     this.enable();
   }
 
-  getNeighbour(rowIndex, cellIndex) {
+  getNeighbour(rowIndex: number, cellIndex: number) {
     const row = this.rowIndex - rowIndex;
     const cell = this.cellIndex - cellIndex;
     if (row < 0 || cell < 0) return EBlocks.EMPTY;
@@ -48,7 +47,7 @@ export class Block extends Graphics {
   }
 
   getNeighbours() {
-    this.neighbours = [
+    const neighbours = [
       this.getNeighbour(1, 1),
       this.getNeighbour(1, 0),
       this.getNeighbour(1, -1),
@@ -60,11 +59,13 @@ export class Block extends Graphics {
     ];
 
     this.adjacent = [
-      this.neighbours[1],
-      this.neighbours[3],
-      this.neighbours[4],
-      this.neighbours[6],
+      neighbours[1],
+      neighbours[3],
+      neighbours[4],
+      neighbours[6],
     ];
+
+    this.neighbours = neighbours;
   }
 
   update() {
@@ -86,17 +87,14 @@ export class Block extends Graphics {
 
   getPower() {
     const powerAdjacent =
-      !!this.adjacent.some(
+      this.adjacent.some(
         (item) =>
-          item.type === EBlocks.POWER ||
-          ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item.type) &&
-            item.power.enabled)
+          item?.type === EBlocks.POWER ||
+          ([EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(item?.type) &&
+            item?.power?.enabled)
       ) || this.type === EBlocks.POWER;
 
-    const enabled =
-      powerAdjacent && [EBlocks.ROAD, EBlocks.RESIDENTIAL].includes(this.type);
-
-    this.powerConnected = enabled;
+    const enabled = powerAdjacent;
 
     return {
       enabled,
@@ -114,6 +112,7 @@ export class Block extends Graphics {
   updater() {
     blocks[this.rowIndex][this.cellIndex].power = this.getPower();
     blocks[this.rowIndex][this.cellIndex].police = this.getPolice();
+    blocks[this.rowIndex][this.cellIndex].adjacent = this.adjacent;
     this.block = blocks[this.rowIndex][this.cellIndex];
   }
 
@@ -121,9 +120,11 @@ export class Block extends Graphics {
     if (!blocks[this.rowIndex]) blocks[this.rowIndex] = [];
     blocks[this.rowIndex][this.cellIndex] = {
       type: this.type,
-      power: { enabled: this.type === EBlocks.POWER, distance: 0 },
+      power: { enabled: this.type === EBlocks.POWER },
       police: { coverage: this.coverage },
     };
+
+    this.block = blocks[this.rowIndex][this.cellIndex];
   }
 
   enable() {

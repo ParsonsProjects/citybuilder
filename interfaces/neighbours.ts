@@ -1,8 +1,9 @@
 import { EBlocks } from '../enums/blocks';
 
 export interface INeighbour {
-  power: { enabled: boolean; distance: number };
+  power: { enabled: boolean };
   police: { coverage: number };
+  adjacent: INeighbour[];
   type: EBlocks;
 }
 
