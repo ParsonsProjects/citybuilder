@@ -16,8 +16,7 @@ export class Residential extends Zone {
   }
 
   setPowerLevel() {
-    const currentUsagePower = utilities.power.usage;
-    this.newTotal = currentUsagePower + this.usage;
+    this.newTotal = utilities.power.usage + this.usage;
     utilities.power.usage = this.newTotal;
   }
 
@@ -30,16 +29,12 @@ export class Residential extends Zone {
   }
 
   getPowerLevel() {
-    // this.hasPower = this.block?.power?.enabled;
     if (!this.block?.power?.enabled) return this.disablePower();
     this.setPowerLevel();
-    // if (this.block?.power?.enabled) return this.enablePower();
-
     const totalPower = utilities.power.total;
     this.hasPower = this.newTotal <= totalPower;
-    // if (!this.hasPower) this.disablePower();
-    if (this.hasPower) this.enablePower();
-    // if (this.hasPower && this.block?.power?.enabled) this.enablePower();
+    if (!this.hasPower) this.disablePower();
+    if (this.hasPower && this.block?.power?.enabled) this.enablePower();
   }
 
   ticker() {

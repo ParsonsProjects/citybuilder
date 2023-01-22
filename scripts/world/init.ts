@@ -16,7 +16,6 @@ export class World {
     document.body.appendChild(app.view);
 
     ticker.add(() => {
-      utilities.power.total = 0;
       utilities.power.usage = 0;
     });
 

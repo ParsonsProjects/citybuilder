@@ -9,9 +9,6 @@ export class Power extends Block {
 
   constructor(app: Application) {
     super(app, 0x3d3d3d);
-  }
-
-  ticker() {
     utilities.power.total += this.output;
   }
 }
