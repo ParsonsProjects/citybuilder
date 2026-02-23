@@ -1,27 +1,10 @@
 <script lang="ts">
   import { utilities } from '../../data';
-
-  let powerUsage = $state(0);
-  let powerTotal = $state(0);
-
-  $effect(() => {
-    let frame: number;
-
-    function tick() {
-      powerUsage = utilities.power.usage;
-      powerTotal = utilities.power.total;
-      frame = requestAnimationFrame(tick);
-    }
-
-    frame = requestAnimationFrame(tick);
-
-    return () => cancelAnimationFrame(frame);
-  });
 </script>
 
 <div class="power-display">
-  <div class="power-stat">Power Total: {powerTotal}</div>
-  <div class="power-stat">Power Usage: {powerUsage}</div>
+  <div class="power-stat">Power Total: {utilities.power.total}</div>
+  <div class="power-stat">Power Usage: {utilities.power.usage}</div>
 </div>
 
 <style>

@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { World } from '../world/init';
   import PowerDisplay from './PowerDisplay.svelte';
   import '../../styles/reset.css';
 
   let canvasContainer: HTMLDivElement;
 
-  $effect(() => {
+  onMount(() => {
     const world = new World();
     world.init(canvasContainer);
   });
