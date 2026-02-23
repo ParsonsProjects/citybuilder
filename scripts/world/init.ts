@@ -1,21 +1,18 @@
-import { Application, Ticker } from 'pixi.js';
+import { Application } from 'pixi.js';
 import world from '../../data/map';
 import { Cell } from './cell';
 import { blocks } from '../../data';
 import { utilities } from '../../data';
 
 export class World {
-  init() {
+  async init() {
     const app = new Application();
-    const ticker = Ticker.shared;
-    ticker.autoStart = false;
-
-    app.ticker = ticker;
+    await app.init({ autoStart: false });
 
     document.body.innerHTML = '';
-    document.body.appendChild(app.view);
+    document.body.appendChild(app.canvas);
 
-    ticker.add(() => {
+    app.ticker.add(() => {
       utilities.power.usage = 0;
     });
 
@@ -26,7 +23,7 @@ export class World {
       });
     });
 
-    ticker.start();
+    app.ticker.start();
   }
 }
 

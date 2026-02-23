@@ -4,8 +4,8 @@ import { INeighbours, INeighbour } from '../../interfaces';
 import { blocks } from '../../data';
 
 export class Block extends Graphics {
-  width = 25;
-  height = 25;
+  blockWidth = 25;
+  blockHeight = 25;
   color: number;
   app: Application;
   element: Graphics;
@@ -73,16 +73,15 @@ export class Block extends Graphics {
     this.updater();
     this.ticker();
     this.clear();
-    this.beginFill(this.color);
 
-    this.drawRect(
-      this.cellIndex * this.width,
-      this.rowIndex * this.height,
-      this.width,
-      this.height
+    this.rect(
+      this.cellIndex * this.blockWidth,
+      this.rowIndex * this.blockHeight,
+      this.blockWidth,
+      this.blockHeight
     );
 
-    this.endFill();
+    this.fill(this.color);
   }
 
   getPower() {
@@ -128,7 +127,7 @@ export class Block extends Graphics {
   }
 
   enable() {
-    this.interactive = true;
+    this.eventMode = 'static';
 
     this
       // Mouse & touch events are normalized into
