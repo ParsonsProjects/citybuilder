@@ -1,14 +1,4 @@
-// Import stylesheets
-import './styles/reset.css';
-import { World } from './scripts/world/init';
-import { UI } from './scripts/ui/init';
+import { mount } from 'svelte';
+import App from './scripts/ui/App.svelte';
 
-// Write Javascript code!
-const appDiv = document.getElementById('app');
-appDiv.innerHTML = `<h1>JS Starter</h1>`;
-
-const world = new World();
-await world.init();
-
-const ui = new UI();
-ui.init();
+mount(App, { target: document.getElementById('app')! });
