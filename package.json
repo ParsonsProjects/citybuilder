@@ -2,6 +2,7 @@
   "name": "js",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +12,8 @@
     "pixi.js": "^8.16.0"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "svelte": "^5.53.2",
     "typescript": "^5.9.3",
     "vite": "^7.3.1"
   }

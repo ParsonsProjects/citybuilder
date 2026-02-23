@@ -1,16 +1,14 @@
 import { Application } from 'pixi.js';
 import world from '../../data/map';
 import { Cell } from './cell';
-import { blocks } from '../../data';
 import { utilities } from '../../data';
 
 export class World {
-  async init() {
+  async init(container: HTMLElement) {
     const app = new Application();
     await app.init({ autoStart: false });
 
-    document.body.innerHTML = '';
-    document.body.appendChild(app.canvas);
+    container.appendChild(app.canvas);
 
     app.ticker.add(() => {
       utilities.power.usage = 0;
@@ -26,7 +24,3 @@ export class World {
     app.ticker.start();
   }
 }
-
-setTimeout(() => {
-  // console.log(blocks);
-}, 500);
