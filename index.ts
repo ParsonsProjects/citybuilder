@@ -8,7 +8,7 @@ const appDiv = document.getElementById('app');
 appDiv.innerHTML = `<h1>JS Starter</h1>`;
 
 const world = new World();
-world.init();
+await world.init();
 
 const ui = new UI();
 ui.init();
